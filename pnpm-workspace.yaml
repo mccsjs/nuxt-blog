@@ -1,6 +1,3 @@
-# pnpm 12 的项目级配置：https://pnpm.io/settings/build
-# strictDepBuilds 默认开启，未明确表态的依赖构建脚本会让 install 失败。
-# esbuild 是 Vite/Nuxt 的必需依赖，显式允许其构建脚本；
-# 本项目不需要 better-sqlite3 等原生模块（见 nuxt.config.ts 的 sqliteConnector: 'native'）。
 allowBuilds:
   esbuild: true
+  better-sqlite3: true

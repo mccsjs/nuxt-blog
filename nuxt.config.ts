@@ -1,32 +1,54 @@
-// https://nuxt.com/docs/4.x/directory-structure/nuxt-config
-// 含本文件的目录 = rootDir；Nuxt 4 默认 srcDir 为 app/，~ 别名指向 app/
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
+  compatibilityDate: '2026-11-15',
   modules: ['@nuxt/content'],
-
-  devtools: { enabled: true },
-  compatibilityDate: '2024-04-03',
-
-  // app/assets/ 由构建工具处理，通过全局 css 引入
   css: ['~/assets/css/main.css'],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  devtools: { enabled: false },
+
+  runtimeConfig: {
+    public: {
+      siteUrl: 'https://example.com',
+    },
+  },
+
+  prerender: {
+    crawlLinks: true,
+    routes: ['/rss.xml', '/sitemap.xml'],
+  },
 
   app: {
     head: {
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
+      title: '清风小筑',
       htmlAttrs: { lang: 'zh-CN' },
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      meta: [
+        { name: 'description', content: '一个清新风格的个人博客，记录技术与生活。' },
+      ],
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      script: [
+        {
+          // 暗色模式无闪烁初始化
+          innerHTML: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          tagPosition: 'head',
+        },
+      ],
     },
   },
 
   content: {
-    // Node.js >= 22.5 自带 node:sqlite，无需 better-sqlite3 等需编译的原生依赖。
-    // 这一点对 pnpm 10+ 尤其重要：pnpm 默认不执行第三方依赖的构建脚本。
-    experimental: { sqliteConnector: 'native' },
-  },
-
-  // 静态站：nuxt generate 由 Nitro 爬虫从首页 <a> 链接出发，预渲染所有可达页面
-  // https://nuxt.com/docs/4.x/getting-started/prerendering
-  prerender: {
-    crawlLinks: true,
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+          langs: [
+            'ts', 'js', 'mjs', 'vue', 'css', 'scss', 'html', 'bash', 'shell',
+            'json', 'yaml', 'md', 'python', 'sql', 'diff', 'go', 'rust', 'java',
+          ],
+        },
+      },
+    },
   },
 })

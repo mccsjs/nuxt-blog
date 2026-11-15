@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5eead4"/>
+      <stop offset="0.55" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#a5b4fc"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- 云朵装饰 -->
+  <circle cx="34" cy="46" r="16" fill="#ffffff" opacity="0.35"/>
+  <circle cx="52" cy="40" r="12" fill="#ffffff" opacity="0.35"/>
+  <circle cx="170" cy="150" r="20" fill="#ffffff" opacity="0.25"/>
+  <!-- 叶芽发饰 -->
+  <path d="M100 42c-10-14-28-14-34-4 12 4 24 6 34 4z" fill="#0d9488"/>
+  <path d="M100 42c10-14 28-14 34-4-12 4-24 6-34 4z" fill="#14b8a6"/>
+  <!-- 脸 -->
+  <circle cx="100" cy="108" r="52" fill="#fdfaf6"/>
+  <!-- 头发 -->
+  <path d="M48 108a52 52 0 0 1 104 0c0-34-22-52-52-52s-52 18-52 52z" fill="#134e4a"/>
+  <path d="M48 106c6-6 12-8 18-7m86 7c-6-6-12-8-18-7" stroke="#134e4a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- 眼睛 -->
+  <circle cx="82" cy="106" r="6" fill="#134e4a"/>
+  <circle cx="118" cy="106" r="6" fill="#134e4a"/>
+  <circle cx="84" cy="104" r="2" fill="#ffffff"/>
+  <circle cx="120" cy="104" r="2" fill="#ffffff"/>
+  <!-- 腮红 -->
+  <ellipse cx="70" cy="122" rx="8" ry="5" fill="#fda4af" opacity="0.7"/>
+  <ellipse cx="130" cy="122" rx="8" ry="5" fill="#fda4af" opacity="0.7"/>
+  <!-- 微笑 -->
+  <path d="M88 128q12 12 24 0" stroke="#134e4a" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>
