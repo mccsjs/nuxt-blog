@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const { data: posts } = await useAsyncData('tags-posts', () =>
   queryCollection('posts').select('path', 'title', 'date', 'tags').all(),
@@ -23,7 +23,7 @@ function sizeFor(count: number) {
   return 'text-sm'
 }
 
-useSeoMeta({ title: `标签 - ${siteConfig.name}`, description: '按标签浏览博客文章' })
+usePageSeo({ title: `标签 - ${siteConfig.name}`, description: '按标签浏览博客文章' })
 </script>
 
 <template>
@@ -32,6 +32,8 @@ useSeoMeta({ title: `标签 - ${siteConfig.name}`, description: '按标签浏览
       <h1 class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">标签</h1>
       <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">共 {{ tagCount.length }} 个标签</p>
     </section>
+
+    <TabNav />
     <div class="fade-up flex flex-wrap items-baseline justify-center gap-x-6 gap-y-4 rounded-3xl border border-white/70 bg-white/85 p-8 shadow-soft backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/80">
       <NuxtLink
         v-for="[name, count] in tagCount"

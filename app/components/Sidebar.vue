@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IconLayoutGrid, IconSpeakerphone } from '@tabler/icons-vue'
 
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 function countWords(node: unknown): number {
   let text = ''

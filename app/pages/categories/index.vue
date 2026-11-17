@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const { data: posts } = await useAsyncData('categories-posts', () =>
   queryCollection('posts').select('path', 'title', 'category', 'description', 'date').all(),
@@ -14,7 +14,7 @@ const categoryCount = computed(() => {
   return [...map.entries()].sort((a, b) => b[1] - a[1])
 })
 
-useSeoMeta({ title: `分类 - ${siteConfig.name}`, description: '按分类浏览博客文章' })
+usePageSeo({ title: `分类 - ${siteConfig.name}`, description: '按分类浏览博客文章' })
 </script>
 
 <template>
@@ -23,6 +23,8 @@ useSeoMeta({ title: `分类 - ${siteConfig.name}`, description: '按分类浏览
       <h1 class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">分类</h1>
       <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">共 {{ categoryCount.length }} 个分类</p>
     </section>
+
+    <TabNav />
     <div class="grid gap-4 sm:grid-cols-2">
       <NuxtLink
         v-for="[name, count] in categoryCount"

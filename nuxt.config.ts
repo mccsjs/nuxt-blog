@@ -5,7 +5,39 @@ import { siteConfig } from './shared/site'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-11-15',
-  modules: ['@nuxt/content', '@nuxt/image'],
+  modules: [
+    '@nuxt/content',
+    '@nuxt/image',
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
+    'nuxt-schema-org',
+  ],
+
+  // 官方 site config：robots / sitemap / schema-org / SEO 工具共用
+  site: {
+    url: 'https://mccsjs.cn',
+    name: siteConfig.name,
+    description: siteConfig.description,
+    defaultLocale: 'zh-CN',
+  },
+
+  schemaOrg: {
+    // 生产构建默认关闭响应式，开启后文章页可用 getter 动态输出 BlogPosting
+    reactive: true,
+  },
+
+  schemaOrg: {
+    // 生产构建默认关闭响应式，开启后文章页可用 getter 动态输出 BlogPosting
+    reactive: true,
+  },
+
+  robots: {
+    disallow: ['/api/'],
+  },
+
+  sitemap: {
+    exclude: ['/404'],
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
@@ -14,7 +46,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl: 'https://example.com',
+      siteUrl: 'https://mccsjs.cn',
       twikooEnvId: 'https://pl.mccsjs.cn',
       buildTime: new Date().toISOString(),
     },
@@ -22,7 +54,7 @@ export default defineNuxtConfig({
 
   prerender: {
     crawlLinks: true,
-    routes: ['/rss.xml', '/sitemap.xml'],
+    routes: ['/rss.xml', '/sitemap.xml', '/robots.txt'],
   },
 
   app: {

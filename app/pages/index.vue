@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const { data: posts } = await useAsyncData('home-posts', () =>
   queryCollection('posts')
@@ -9,12 +9,7 @@ const { data: posts } = await useAsyncData('home-posts', () =>
     .all(),
 )
 
-useSeoMeta({
-  title: siteConfig.name,
-  description: siteConfig.description,
-  ogTitle: siteConfig.name,
-  ogDescription: siteConfig.description,
-})
+usePageSeo({ title: siteConfig.name, description: siteConfig.description })
 </script>
 
 <template>

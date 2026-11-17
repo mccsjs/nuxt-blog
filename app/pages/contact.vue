@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const email = siteConfig.socials.find(s => s.url.startsWith('mailto:'))
 const emailAddr = email?.url.replace('mailto:', '') || ''
 const httpSocials = siteConfig.socials.filter(s => /^https?:\/\//.test(s.url))
 
-useSeoMeta({ title: `联系 - ${siteConfig.name}`, description: '联系站长 — 邮箱与社交平台' })
+usePageSeo({ title: `联系 - ${siteConfig.name}`, description: '联系站长 — 邮箱与社交平台' })
 </script>
 
 <template>

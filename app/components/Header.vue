@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 const searchOpen = useState('search-open', () => false)
 const mobileOpen = ref(false)
 const route = useRoute()
@@ -17,8 +17,6 @@ import { IconBook2, IconHome, IconInfoCircle, IconLink, IconSearch } from '@tabl
 const navs = [
   { label: '首页', to: '/', icon: markRaw(IconHome) },
   { label: '文章', to: '/posts', icon: markRaw(IconBook2) },
-  { label: '归档', to: '/archive', icon: 'archive' },
-  { label: '标签', to: '/tags', icon: 'tags' },
   { label: '友链', to: '/link', icon: markRaw(IconLink) },
   { label: '关于', to: '/about', icon: markRaw(IconInfoCircle) },
 ]
@@ -48,7 +46,17 @@ const menuGroups = [
   },
 ]
 
+const siteMenuBtn = ref<HTMLElement | null>(null)
+const menuPanelStyle = ref<{ left: string, top: string }>({ left: '0px', top: '0px' })
+
+function updatePanelPosition() {
+  const el = siteMenuBtn.value
+  if (!el) return
+  const r = el.getBoundingClientRect()
+  menuPanelStyle.value = { left: `${Math.round(r.left)}px`, top: `${Math.round(r.bottom + 10)}px` }
+}
 function openMenu() {
+  updatePanelPosition()
   if (menuCloseTimer) { clearTimeout(menuCloseTimer); menuCloseTimer = null }
   menuOpen.value = true
 }
@@ -59,6 +67,7 @@ function scheduleCloseMenu() {
 function toggleMenu(e: Event) {
   e.preventDefault()
   e.stopPropagation()
+  updatePanelPosition()
   menuOpen.value = !menuOpen.value
 }
 function onDocClick(e: MouseEvent) {
@@ -140,6 +149,7 @@ onUnmounted(() => {
       <div :class="segClass" class="px-2">
         <div class="site-menu-root relative flex items-center gap-2">
           <button
+            ref="siteMenuBtn"
             class="flex shrink-0 cursor-pointer items-center justify-center rounded-[9px] p-[3px] transition duration-200 hover:bg-black/6 active:scale-96 dark:hover:bg-white/8"
             aria-label="打开图标菜单"
             @pointerdown="toggleMenu"
@@ -158,42 +168,6 @@ onUnmounted(() => {
             <span class="pr-1 text-base tracking-wide">{{ siteConfig.name }}</span>
           </NuxtLink>
 
-          <Transition
-            enter-active-class="transition duration-200 ease-out"
-            enter-from-class="-translate-y-1.5 opacity-0"
-            enter-to-class="translate-y-0 opacity-100"
-            leave-active-class="transition duration-150 ease-in"
-            leave-from-class="opacity-100"
-            leave-to-class="-translate-y-1.5 opacity-0"
-          >
-            <div
-              v-if="menuOpen"
-              class="absolute left-0 top-full z-50 mt-2.5 w-80 rounded-2xl border border-slate-900/8 bg-white/92 p-3.5 shadow-soft-lg backdrop-blur-xl dark:border-white/6 dark:bg-slate-900/92"
-              @mouseenter="openMenu"
-              @mouseleave="scheduleCloseMenu"
-            >
-              <div
-                v-for="(g, gi) in menuGroups"
-                :key="g.title"
-                :class="gi < menuGroups.length - 1 ? 'mb-2.5 border-b border-slate-100 pb-2.5 dark:border-white/5' : ''"
-              >
-                <div class="px-1.5 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ g.title }}</div>
-                <div class="grid grid-cols-2 gap-1">
-                  <a
-                    v-for="item in g.items"
-                    :key="item.label"
-                    :href="item.href"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2 whitespace-nowrap rounded-[10px] px-2.5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-900/4 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/6 dark:hover:text-slate-100"
-                  >
-                    <img :src="item.icon" alt="" class="h-[18px] w-[18px] shrink-0 object-contain" loading="lazy" />
-                    <span>{{ item.label }}</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Transition>
         </div>
       </div>
 
@@ -275,6 +249,46 @@ onUnmounted(() => {
         </NuxtLink>
       </nav>
     </Transition>
+
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="-translate-y-1.5 opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="-translate-y-1.5 opacity-0"
+      >
+      <div
+        v-if="menuOpen"
+        class="site-menu-panel fixed z-50 w-80 rounded-2xl border border-black/5 bg-white/92 p-3.5 shadow-soft-lg backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 dark:bg-slate-900/92"
+        :style="menuPanelStyle"
+        @mouseenter="openMenu"
+        @mouseleave="scheduleCloseMenu"
+      >
+        <div
+          v-for="(g, gi) in menuGroups"
+          :key="g.title"
+          :class="gi < menuGroups.length - 1 ? 'mb-2.5 border-b border-slate-100 pb-2.5 dark:border-white/5' : ''"
+        >
+          <div class="px-1.5 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ g.title }}</div>
+          <div class="grid grid-cols-2 gap-1">
+            <a
+              v-for="item in g.items"
+              :key="item.label"
+              :href="item.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 whitespace-nowrap rounded-[10px] px-2.5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-900/4 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/6 dark:hover:text-slate-100"
+            >
+              <img :src="item.icon" alt="" class="h-[18px] w-[18px] shrink-0 object-contain" loading="lazy" />
+              <span>{{ item.label }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      </Transition>
+    </Teleport>
   </header>
 
   <SearchPanel />

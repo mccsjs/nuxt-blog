@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 const props = defineProps<{ error: { statusCode?: number; statusMessage?: string } }>()
 
-useSeoMeta({ title: `页面不存在 - ${siteConfig.name}` })
+usePageSeo({ title: `页面不存在 - ${siteConfig.name}`, description: '页面不存在或已被移动' })
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const route = useRoute()
 const category = computed(() => String(route.params.category))
@@ -13,7 +13,7 @@ const { data: posts } = await useAsyncData(`category-${route.params.category}`, 
 
 const filtered = computed(() => (posts.value || []).filter((p) => (p.category || '随笔') === category.value))
 
-useSeoMeta({ title: () => `分类「${category.value}」- ${siteConfig.name}`, description: () => `分类「${category.value}」下的文章，共 ${filtered.value.length} 篇` })
+usePageSeo(() => ({ title: `分类「${category.value}」- ${siteConfig.name}`, description: `分类「${category.value}」下的文章，共 ${filtered.value.length} 篇` }))
 </script>
 
 <template>

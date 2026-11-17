@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 const route = useRoute()
 const router = useRouter()
 
@@ -40,17 +40,19 @@ function goPage(target: number) {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-useSeoMeta({ title: `归档 - ${siteConfig.name}`, description: `按年份浏览博客文章，共 ${posts.value?.length || 0} 篇` })
+usePageSeo({ title: `归档 - ${siteConfig.name}`, description: `按年份浏览博客文章，共 ${posts.value?.length || 0} 篇` })
 </script>
 
 <template>
   <div class="mx-auto max-w-3xl">
     <section class="fade-up mb-10 text-center">
-      <h1 class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">时间归档</h1>
+      <h1 class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">归档</h1>
       <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
         共 <span class="font-semibold text-teal-600 dark:text-teal-300">{{ posts?.length || 0 }}</span> 篇文章
       </p>
     </section>
+
+    <TabNav />
 
     <div class="space-y-10">
       <section v-for="[year, items] in grouped" :key="year" class="fade-up">

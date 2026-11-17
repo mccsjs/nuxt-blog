@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 const { data: links } = await useAsyncData('footer-links', () =>
   queryCollection('links').all(),
 )

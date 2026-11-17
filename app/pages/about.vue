@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
-useSeoMeta({ title: `关于 - ${siteConfig.name}`, description: `关于 ${siteConfig.author}` })
+usePageSeo({ title: `关于 - ${siteConfig.name}`, description: `关于 ${siteConfig.author}` })
 </script>
 
 <template>

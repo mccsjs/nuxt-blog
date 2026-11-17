@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const { data: links } = await useAsyncData('links', () =>
   queryCollection('links').all(),
@@ -62,10 +62,7 @@ function avatarKey(link: LinkItem) {
   return `${link.id}:avatar`
 }
 
-useSeoMeta({
-  title: `友链 - ${siteConfig.name}`,
-  description: `与 ${siteConfig.name} 交换链接的朋友们`,
-})
+usePageSeo({ title: `友链 - ${siteConfig.name}`, description: `与 ${siteConfig.name} 交换链接的朋友们` })
 </script>
 
 <template>

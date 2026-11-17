@@ -1,6 +1,6 @@
 import { siteConfig } from '#shared/site'
 
-export const useSiteConfig = () => ({
+export const useBlogConfig = () => ({
   ...siteConfig,
   url: useRuntimeConfig().public.siteUrl,
 })

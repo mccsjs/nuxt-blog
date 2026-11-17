@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const route = useRoute()
 const tag = computed(() => String(route.params.tag))
@@ -13,7 +13,7 @@ const { data: posts } = await useAsyncData(`tag-${route.params.tag}`, () =>
 
 const filtered = computed(() => (posts.value || []).filter((p) => (p.tags || []).includes(tag.value)))
 
-useSeoMeta({ title: () => `标签「${tag.value}」- ${siteConfig.name}`, description: () => `包含「${tag.value}」标签的文章，共 ${filtered.value.length} 篇` })
+usePageSeo(() => ({ title: `标签「${tag.value}」- ${siteConfig.name}`, description: `包含「${tag.value}」标签的文章，共 ${filtered.value.length} 篇` }))
 </script>
 
 <template>

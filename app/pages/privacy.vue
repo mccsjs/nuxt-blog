@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const email = siteConfig.socials.find(s => s.url.startsWith('mailto:'))
 const emailAddr = email?.url.replace('mailto:', '') || ''
 
-useSeoMeta({ title: `隐私声明 - ${siteConfig.name}`, description: '本站隐私声明 — 数据处理方式说明' })
+usePageSeo({ title: `隐私声明 - ${siteConfig.name}`, description: '本站隐私声明 — 数据处理方式说明' })
 </script>
 
 <template>

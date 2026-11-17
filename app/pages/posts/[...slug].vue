@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
+const siteConfig = useBlogConfig()
 
 const route = useRoute()
 const path = route.path
@@ -27,10 +27,31 @@ watch(() => post.value?.body?.toc?.links, (links) => {
   tocLinks.value = links || []
 }, { immediate: true })
 
-useSeoMeta({
-  title: () => `${post.value?.title} - ${siteConfig.name}`,
-  description: () => post.value?.description || siteConfig.description,
-})
+useSchemaOrg(() => ({
+  '@type': 'BlogPosting',
+  headline: post.value?.title,
+  description: post.value?.description,
+  image: post.value?.image ? `${siteConfig.url}${post.value.image}` : undefined,
+  datePublished: post.value?.date,
+  dateModified: post.value?.date,
+  author: { '@type': 'Person', name: siteConfig.author },
+  keywords: post.value?.tags?.join(','),
+  mainEntityOfPage: `${siteConfig.url}${post.value?.path || ''}`,
+}))
+
+usePageSeo(() => ({
+  title: `${post.value?.title} - ${siteConfig.name}`,
+  description: post.value?.description || siteConfig.description,
+  image: post.value?.image,
+  imageWidth: 640,
+  imageHeight: 360,
+  type: 'article',
+  publishedTime: post.value?.date,
+  author: siteConfig.author,
+  tags: post.value?.tags,
+}))
+
+
 </script>
 
 <template>
