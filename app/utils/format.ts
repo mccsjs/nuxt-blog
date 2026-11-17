@@ -1,13 +1,19 @@
 export function formatDate(date: string): string {
   if (!date) return ''
-  const [y, m, d] = date.split('-').map(Number)
+  const [y, m, d] = date.slice(0, 10).split('-').map(Number)
   if (!y || !m || !d) return date
   return `${y} 年 ${m} 月 ${d} 日`
 }
 
+export function formatDateDay(date: string): string {
+  if (!date) return ''
+  const [y, m, d] = date.slice(0, 10).split('-')
+  return y && m && d ? `${y}-${m}-${d}` : date
+}
+
 export function formatDateShort(date: string): string {
   if (!date) return ''
-  const [, m, d] = date.split('-')
+  const [, m, d] = date.slice(0, 10).split('-')
   return m && d ? `${m}-${d}` : date
 }
 

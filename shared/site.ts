@@ -7,9 +7,10 @@ export interface SocialLink {
 }
 
 export const siteConfig = {
-  name: '清风小筑',
-  author: '云杉',
-  avatar: '/avatar.svg',
+  name: 'mccsjs',
+  author: 'mccsjs',
+  siteStartDate: '2023-01-22',
+  avatar: '/avatar.webp',
   slogan: '写代码，也写生活 🌿',
   description: '记录前端技术、阅读笔记与生活片段，愿文字如清风拂面。',
   email: 'hello@example.com',

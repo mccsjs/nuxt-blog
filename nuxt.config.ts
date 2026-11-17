@@ -1,8 +1,11 @@
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
+import { siteConfig } from './shared/site'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-11-15',
-  modules: ['@nuxt/content'],
+  modules: ['@nuxt/content', '@nuxt/image'],
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
@@ -12,6 +15,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: 'https://example.com',
+      twikooEnvId: 'https://pl.mccsjs.cn',
+      buildTime: new Date().toISOString(),
     },
   },
 
@@ -21,13 +26,17 @@ export default defineNuxtConfig({
   },
 
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: '清风小筑',
+      title: siteConfig.name,
       htmlAttrs: { lang: 'zh-CN' },
       meta: [
         { name: 'description', content: '一个清新风格的个人博客，记录技术与生活。' },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { rel: 'icon', type: 'image/webp', href: '/favicon.webp' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/a.woff2?v=2', crossorigin: 'anonymous' },
+      ],
       script: [
         {
           // 暗色模式无闪烁初始化
@@ -35,6 +44,21 @@ export default defineNuxtConfig({
           tagPosition: 'head',
         },
       ],
+    },
+  },
+
+  hooks: {
+    'content:file:afterParse': (ctx) => {
+      const content = ctx.content as Record<string, unknown>
+      const path = content.path as string | undefined
+      if (path?.startsWith('/posts/')) {
+        const slug = (content.slug as string | undefined) || path.split('/').filter(Boolean).pop()
+        content.path = `/posts/${slug}`
+        if (!content.image && slug) {
+          const cover = resolve(process.cwd(), 'public', 'covers', `${slug}.webp`)
+          if (existsSync(cover)) content.image = `/covers/${slug}.webp`
+        }
+      }
     },
   },
 

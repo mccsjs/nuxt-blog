@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const siteUrl = useRuntimeConfig(event).public.siteUrl
   const posts = await queryCollection(event, 'posts').select('path', 'date').all()
 
-  const staticPages = ['/', '/posts', '/archive', '/tags', '/categories', '/about']
+  const staticPages = ['/', '/posts', '/archive', '/tags', '/categories', '/link', '/about']
   const urls = [
     ...staticPages,
     ...(posts || []).map((p) => p.path),

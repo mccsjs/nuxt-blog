@@ -24,7 +24,17 @@ const gradient = computed(() => gradientFor(props.path))
   >
     <!-- 封面 / 渐变头图 -->
     <div class="relative shrink-0 overflow-hidden" :class="horizontal ? 'h-44 sm:h-auto sm:w-52' : 'h-36'">
-      <img v-if="image" :src="image" :alt="title" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+      <NuxtImg
+        v-if="image"
+        :src="image"
+        :alt="title"
+        width="640"
+        height="360"
+        densities="1x"
+        format="webp"
+        loading="lazy"
+        class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+      />
       <div v-else class="flex h-full w-full items-center justify-center bg-gradient-to-br transition duration-500 group-hover:scale-105" :class="gradient">
         <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/60 text-teal-600 shadow-sm backdrop-blur dark:bg-white/10 dark:text-teal-300">
           <Icon name="posts" class="h-5 w-5" />

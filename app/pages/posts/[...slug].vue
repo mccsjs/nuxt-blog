@@ -2,9 +2,9 @@
 const siteConfig = useSiteConfig()
 
 const route = useRoute()
-const path = `/posts/${route.params.slug}`
+const path = route.path
 
-const { data: post } = await useAsyncData(`post-${route.params.slug}`, () =>
+const { data: post } = await useAsyncData(`post-${path}`, () =>
   queryCollection('posts').path(path).first(),
 )
 
@@ -12,12 +12,20 @@ if (!post.value) {
   throw createError({ statusCode: 404, statusMessage: '文章不存在', fatal: true })
 }
 
-const { data: surround } = await useAsyncData(`surround-${route.params.slug}`, () =>
+const { data: surround } = await useAsyncData(`surround-${path}`, () =>
   queryCollectionItemSurroundings('posts', path, { fields: ['title', 'description', 'date'] }),
 )
 
 const prev = computed(() => surround.value?.[0])
 const next = computed(() => surround.value?.[1])
+
+const contentRef = ref<HTMLElement | null>(null)
+useFancybox(contentRef, () => route.path)
+
+const tocLinks = useState<{ id?: string, text?: string, depth?: number }[]>('post-toc', () => [])
+watch(() => post.value?.body?.toc?.links, (links) => {
+  tocLinks.value = links || []
+}, { immediate: true })
 
 useSeoMeta({
   title: () => `${post.value?.title} - ${siteConfig.name}`,
@@ -26,7 +34,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div v-if="post" class="grid gap-8 xl:grid-cols-[1fr_16rem]">
+  <div v-if="post" class="grid gap-8" :class="tocLinks.length ? 'xl:grid-cols-[1fr_16rem]' : 'xl:mx-auto xl:max-w-[54rem]'">
     <article class="min-w-0">
       <!-- 文章头部 -->
       <header class="fade-up rounded-3xl border border-white/70 bg-white/85 p-7 shadow-soft backdrop-blur sm:p-9 dark:border-slate-700/70 dark:bg-slate-900/80">
@@ -59,7 +67,7 @@ useSeoMeta({
       </header>
 
       <!-- 正文 -->
-      <div class="fade-up mt-6 rounded-3xl border border-white/70 bg-white/85 p-7 shadow-soft backdrop-blur sm:p-9 dark:border-slate-700/70 dark:bg-slate-900/80">
+      <div ref="contentRef" class="fade-up mt-6 rounded-3xl border border-white/70 bg-white/85 p-7 shadow-soft backdrop-blur sm:p-9 dark:border-slate-700/70 dark:bg-slate-900/80">
         <ContentRenderer :value="post" class="prose prose-slate max-w-none dark:prose-invert" />
       </div>
 
@@ -93,6 +101,8 @@ useSeoMeta({
           </span>
         </NuxtLink>
       </nav>
+
+      <PostComments />
     </article>
 
     <TocAside :links="post.body?.toc?.links" />

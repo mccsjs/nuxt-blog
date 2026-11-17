@@ -39,7 +39,8 @@ app/
 shared/site.ts
 content/
 ├── posts/*.md
-└── pages/about.md
+├── pages/about.md
+└── links.csv
 public/
 server/routes/
 test/
@@ -70,8 +71,16 @@ category: 前端开发
 
 1. 站点信息：`shared/site.ts`
 2. 主色：`app/assets/css/main.css` 的 `--color-primary-*`
-3. 头像：`public/avatar.svg`
+3. 头像：`public/avatar.webp`
 4. 域名：`NUXT_PUBLIC_SITE_URL`（影响 RSS / sitemap）
+
+## 友链
+
+友链数据在 `content/links.csv`，每行一个站点，表头为 `name,url,description,avatar,type,screenshot,recommended,sort,speedtest`。`type` 即分类，页面自动按分类分组并按 `sort` 排序。`screenshot` 留空时自动用 mshots 按站点 URL 生成截图，加载失败依次回退到头像与渐变占位。增删行即可更新。
+
+## 图片
+
+图片由 `@nuxt/image` 处理，`nuxt generate` 时构建期优化。文章 frontmatter 加 `image: /covers/post.jpg` 即可显示封面，图片放 `public/`。远程图片需在 `nuxt.config.ts` 的 `image.domains` 加白名单。
 
 ## 测试
 

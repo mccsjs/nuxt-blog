@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { IconMoonStars, IconSunLow } from '@tabler/icons-vue'
+
 const { isDark, toggle } = useTheme()
 </script>
 
@@ -9,7 +11,8 @@ const { isDark, toggle } = useTheme()
     @click="toggle"
   >
     <ClientOnly>
-      <Icon :name="isDark ? 'sun' : 'moon'" />
+      <IconSunLow v-if="isDark" :size="20" :stroke="1.8" />
+      <IconMoonStars v-else :size="20" :stroke="1.8" />
       <template #fallback>
         <span class="h-5 w-5"></span>
       </template>

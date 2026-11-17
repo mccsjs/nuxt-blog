@@ -1,19 +1,44 @@
 <script setup lang="ts">
 const siteConfig = useSiteConfig()
+const route = useRoute()
+const router = useRouter()
+
+const PAGE_SIZE = 12
 
 const { data: posts } = await useAsyncData('archive-posts', () =>
   queryCollection('posts').select('path', 'title', 'date', 'category').order('date', 'DESC').all(),
 )
 
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil((posts.value?.length || 0) / PAGE_SIZE)),
+)
+
+const page = computed(() => {
+  const n = Math.floor(Number(route.query.page))
+  if (!Number.isFinite(n) || n < 1) return 1
+  return Math.min(n, totalPages.value)
+})
+
+const pagePosts = computed(() => {
+  const start = (page.value - 1) * PAGE_SIZE
+  return (posts.value || []).slice(start, start + PAGE_SIZE)
+})
+
 const grouped = computed(() => {
   const map = new Map<string, typeof posts.value>()
-  for (const post of posts.value || []) {
+  for (const post of pagePosts.value) {
     const year = post.date?.slice(0, 4) || '未知'
     if (!map.has(year)) map.set(year, [])
     map.get(year)!.push(post)
   }
   return [...map.entries()]
 })
+
+function goPage(target: number) {
+  if (target < 1 || target > totalPages.value || target === page.value) return
+  router.push({ query: target === 1 ? {} : { page: String(target) } })
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 useSeoMeta({ title: `归档 - ${siteConfig.name}`, description: `按年份浏览博客文章，共 ${posts.value?.length || 0} 篇` })
 </script>
@@ -57,5 +82,38 @@ useSeoMeta({ title: `归档 - ${siteConfig.name}`, description: `按年份浏览
         </ul>
       </section>
     </div>
+
+    <nav v-if="totalPages > 1" class="mt-12 flex items-center justify-center gap-1.5" aria-label="分页">
+      <button
+        class="rounded-full px-3 py-1.5 text-sm text-slate-500 transition enabled:hover:bg-teal-50 enabled:hover:text-teal-600 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400 dark:enabled:hover:bg-teal-900/30 dark:enabled:hover:text-teal-300"
+        :disabled="page === 1"
+        @click="goPage(page - 1)"
+      >
+        上一页
+      </button>
+      <button
+        v-for="n in totalPages"
+        :key="n"
+        class="h-8 min-w-8 rounded-full px-2 text-sm font-medium transition"
+        :class="n === page
+          ? 'bg-gradient-to-r from-teal-500 to-sky-500 text-white shadow-soft'
+          : 'text-slate-500 hover:bg-teal-50 hover:text-teal-600 dark:text-slate-400 dark:hover:bg-teal-900/30 dark:hover:text-teal-300'"
+        :aria-current="n === page ? 'page' : undefined"
+        @click="goPage(n)"
+      >
+        {{ n }}
+      </button>
+      <button
+        class="rounded-full px-3 py-1.5 text-sm text-slate-500 transition enabled:hover:bg-teal-50 enabled:hover:text-teal-600 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400 dark:enabled:hover:bg-teal-900/30 dark:enabled:hover:text-teal-300"
+        :disabled="page === totalPages"
+        @click="goPage(page + 1)"
+      >
+        下一页
+      </button>
+    </nav>
+
+    <p v-if="totalPages > 1" class="mt-3 text-center text-xs text-slate-400 dark:text-slate-500">
+      第 {{ page }} / {{ totalPages }} 页
+    </p>
   </div>
 </template>

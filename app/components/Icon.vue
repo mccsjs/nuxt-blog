@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ name: string }>()
+const props = withDefaults(defineProps<{ name: string, size?: string }>(), { size: 'h-5 w-5' })
 
-const paths: Record<string, string> = {
+const paths: Record<string, string | string[]> = {
   home: 'M3 10.5 12 3l9 7.5M5.5 9.5V20h4.5v-5h4v5h4.5V9.5',
   posts: 'M4 5.5h16M4 5.5A1.5 1.5 0 0 0 2.5 7v11A1.5 1.5 0 0 0 4 19.5h16a1.5 1.5 0 0 0 1.5-1.5V7A1.5 1.5 0 0 0 20 5.5m-16 3h10m-10 4h16m-16 4h7',
   archive: 'M4 7.5h16M6.5 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 8h7',
@@ -24,7 +24,22 @@ const paths: Record<string, string> = {
   arrowRight: 'M5 12h14m0 0-6-6m6 6-6 6',
   arrowUp: 'M12 19V5m0 0-6 6m6-6 6 6',
   spark: 'M12 3l1.9 5.6a2 2 0 0 0 1.3 1.3L20.8 12l-5.6 1.9a2 2 0 0 0-1.3 1.3L12 20.8l-1.9-5.6a2 2 0 0 0-1.3-1.3L3.2 12l5.6-1.9a2 2 0 0 0 1.3-1.3L12 3Z',
+  link: 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',
+  comment: 'M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-5 4V6.5Z',
+  tram: [
+    'M6 3h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z',
+    'M4 11h16',
+    'M12 3v8',
+    'm8 19-2 3',
+    'm18 22-2-3',
+    'M8 15h.01',
+    'M16 15h.01',
+  ],
 }
+const dList = computed(() => {
+  const v = paths[props.name]
+  return Array.isArray(v) ? v : v ? [v] : []
+})
 </script>
 
 <template>
@@ -35,9 +50,9 @@ const paths: Record<string, string> = {
     stroke-width="1.8"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="h-5 w-5 shrink-0"
+    :class="['shrink-0', props.size]"
     aria-hidden="true"
   >
-    <path :d="paths[props.name]" />
+    <path v-for="(d, i) in dList" :key="i" :d="d" />
   </svg>
 </template>

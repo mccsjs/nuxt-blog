@@ -28,13 +28,13 @@ useSeoMeta({ title: `文章 - ${siteConfig.name}`, description: siteConfig.descr
           :title="post.title"
           :path="post.path"
           :description="post.description"
-          :date="post.date"
+          :date="formatDateDay(post.date)"
           :category="post.category"
           :tags="post.tags"
           :image="post.image"
         />
       </div>
-      <Sidebar class="hidden lg:block" />
+      <Sidebar class="lg:block" />
     </div>
   </div>
 </template>
