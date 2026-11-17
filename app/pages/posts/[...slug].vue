@@ -60,7 +60,7 @@ useSeoMeta({
             </NuxtLink>
           </span>
         </div>
-        <h1 class="mt-4 text-2xl font-extrabold leading-snug text-slate-800 sm:text-3xl dark:text-slate-100">
+        <h1 class="mt-4 text-2xl font-extrabold leading-snug text-slate-800 sm:text-3xl dark:text-slate-300">
           {{ post.title }}
         </h1>
         <p v-if="post.description" class="mt-3 text-slate-500 dark:text-slate-400">{{ post.description }}</p>

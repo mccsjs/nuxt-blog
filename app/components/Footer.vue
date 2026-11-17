@@ -82,7 +82,7 @@ onUnmounted(() => clearInterval(timer))
                     :href="motto.href"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="block rounded-2xl bg-gradient-to-r from-amber-200/80 to-orange-200/70 py-1 text-center text-base font-semibold leading-6 text-amber-900 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:from-amber-300/90 hover:to-orange-300/80 hover:shadow-md dark:from-amber-700/60 dark:to-orange-700/50 dark:text-amber-50"
+                    class="block rounded-2xl bg-gradient-to-r from-amber-200/80 to-orange-200/70 py-1 text-center text-base font-semibold leading-6 text-amber-900 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:from-amber-300/90 hover:to-orange-300/80 hover:shadow-md dark:from-yellow-800/55 dark:to-yellow-800/30 dark:text-yellow-200/80 dark:hover:from-yellow-700/70 dark:hover:to-yellow-800/45"
                   >
                     {{ motto.cta }}
                   </a>
@@ -117,7 +117,7 @@ onUnmounted(() => clearInterval(timer))
               :title="friend.name"
               target="_blank"
               rel="noopener noreferrer"
-              class="block aspect-square w-[calc(20%-8px)] shrink-0 overflow-hidden rounded-xl border border-slate-200/80 bg-white/70 transition duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-lg dark:border-slate-700/70 dark:bg-slate-800/70"
+              class="relative block aspect-square w-[calc(20%-8px)] shrink-0 overflow-hidden rounded-xl border border-slate-200/80 bg-white/70 transition duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-lg dark:border-slate-700/70 dark:bg-slate-800/70"
             >
               <img
                 v-if="friend.avatar"
@@ -126,6 +126,7 @@ onUnmounted(() => clearInterval(timer))
                 loading="lazy"
                 class="h-full w-full object-cover"
               />
+              <span v-if="friend.avatar" class="pointer-events-none absolute inset-0 dark:bg-black/10"></span>
               <span v-else class="flex h-full w-full items-center justify-center text-xl font-bold text-amber-600">{{ friend.name.slice(0, 1) }}</span>
             </a>
             <span

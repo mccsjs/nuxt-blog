@@ -135,6 +135,7 @@ useSeoMeta({
             >
               <span class="text-4xl font-bold text-teal-800 dark:text-white">{{ link.name.slice(0, 1) }}</span>
             </div>
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
           </div>
 
           <div class="mt-3 flex items-start gap-3">
@@ -163,9 +164,10 @@ useSeoMeta({
               >
                 {{ link.name.slice(0, 1) }}
               </span>
+              <span class="pointer-events-none absolute inset-0 rounded-full bg-black/2 dark:bg-black/10"></span>
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block truncate text-sm font-bold text-slate-800 transition group-hover:text-teal-600 dark:text-slate-100 dark:group-hover:text-teal-300">{{ link.name }}</span>
+              <span class="block truncate text-sm font-bold text-slate-800 transition group-hover:text-teal-600 dark:text-slate-300 dark:group-hover:text-teal-300">{{ link.name }}</span>
               <span class="mt-0.5 line-clamp-2 text-xs leading-snug text-slate-500 dark:text-slate-400">{{ link.description }}</span>
             </span>
           </div>

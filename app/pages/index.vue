@@ -32,6 +32,7 @@ useSeoMeta({
           :preload="{ fetchPriority: 'high' }"
           class="relative h-28 w-28 rounded-full border-4 border-white shadow-soft-lg dark:border-slate-800"
         />
+        <div class="pointer-events-none absolute inset-0 rounded-full dark:bg-black/10"></div>
       </div>
       <h1 class="mt-6 text-3xl font-extrabold tracking-wide text-slate-800 sm:text-4xl dark:text-slate-100">
         <span class="bg-gradient-to-r from-teal-500 to-sky-500 bg-clip-text text-transparent">{{ siteConfig.name }}</span>

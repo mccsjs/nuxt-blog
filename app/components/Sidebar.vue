@@ -245,11 +245,11 @@ const titleClass = 'mb-4 flex items-center gap-2 text-sm font-bold text-slate-70
             <div class="mb-1 font-semibold">🎉 欢迎 🎉</div>
             <p>
               欢迎来自
-              <span class="font-semibold text-teal-600 dark:text-teal-300">{{ welcome.place }}</span>
+              <span class="font-semibold text-teal-600 dark:text-teal-400">{{ welcome.place }}</span>
               的小伙伴，{{ greeting }}您现在距离站长约
-              <span class="font-semibold text-teal-600 dark:text-teal-300">{{ welcome.dist }}</span>
+              <span class="font-semibold text-teal-600 dark:text-teal-400">{{ welcome.dist }}</span>
               公里，当前 IP 为
-              <span class="cursor-pointer break-all font-semibold text-teal-600 blur-[5px] transition hover:blur-none dark:text-teal-300">{{ welcome.ip }}</span>
+              <span class="cursor-pointer break-all font-semibold text-teal-600 blur-[5px] transition hover:blur-none dark:text-teal-400">{{ welcome.ip }}</span>
             </p>
           </template>
           <template v-else-if="greeting">

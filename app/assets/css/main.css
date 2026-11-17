@@ -79,7 +79,7 @@ pre.shiki span,
 }
 .dark :not(pre) > code.shiki {
   background-color: var(--color-slate-800);
-  color: var(--color-teal-300);
+  color: var(--color-teal-400);
 }
 
 /* 文章内容排版微调 */

@@ -25,6 +25,52 @@ const navs = [
 
 const isMac = import.meta.client ? /Mac|iPhone|iPad/.test(navigator.platform) : false
 
+const menuOpen = ref(false)
+let menuCloseTimer: ReturnType<typeof setTimeout> | null = null
+
+const menuGroups = [
+  {
+    title: '我的网站',
+    items: [
+      { label: '个人主页', href: 'https://seln.cn/', icon: 'https://hexo.seln.cn/img/lemon.png' },
+      { label: '博客', href: 'https://mccsjs.cn/', icon: 'https://mccsjs.cn/img/ico.jpg' },
+      { label: '友链检测', href: 'https://fc.mccsjs.cn/', icon: 'https://fc.mccsjs.cn/favicon.ico' },
+    ],
+  },
+  {
+    title: '友情链接',
+    items: [
+      { label: '阿叶Ayeez', href: 'https://blog.ayeez.cn', icon: 'https://qiniu.ayeez.cn/avatar.jpg' },
+      { label: '裕裕裕', href: 'https://yu-blog.top/', icon: '/friends/yuyu.webp' },
+      { label: 'ZY知识库', href: 'https://blog.pljzy.top/', icon: '/friends/zy.webp' },
+      { label: 'TangShiMei', href: 'https://blog.224418.xyz/', icon: '/friends/tangshimei.webp' },
+    ],
+  },
+]
+
+function openMenu() {
+  if (menuCloseTimer) { clearTimeout(menuCloseTimer); menuCloseTimer = null }
+  menuOpen.value = true
+}
+function scheduleCloseMenu() {
+  if (menuCloseTimer) clearTimeout(menuCloseTimer)
+  menuCloseTimer = setTimeout(() => { menuOpen.value = false }, 150)
+}
+function toggleMenu(e: Event) {
+  e.preventDefault()
+  e.stopPropagation()
+  menuOpen.value = !menuOpen.value
+}
+function onDocClick(e: MouseEvent) {
+  const t = e.target as HTMLElement | null
+  if (!t?.closest('.site-menu-root')) menuOpen.value = false
+}
+onMounted(() => document.addEventListener('click', onDocClick))
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onDocClick)
+  if (menuCloseTimer) clearTimeout(menuCloseTimer)
+})
+
 const segClass = 'flex h-11 shrink-0 items-center rounded-full border border-black/5 bg-white/70 shadow-soft backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 dark:bg-slate-900/80'
 const iconBtnClass = 'flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition hover:bg-teal-100/70 hover:text-teal-600 dark:text-slate-400 dark:hover:bg-teal-800/40 dark:hover:text-teal-300'
 
@@ -92,12 +138,63 @@ onUnmounted(() => {
     <div class="relative mx-auto flex max-w-6xl items-center justify-between">
       <!-- 左段：图标 + 站名 -->
       <div :class="segClass" class="px-2">
-        <NuxtLink to="/" class="flex items-center gap-2 rounded-full px-1.5 py-1 font-semibold text-slate-800 transition hover:text-teal-600 dark:text-slate-100 dark:hover:text-teal-300">
-          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-teal-400 to-sky-400 text-white shadow-sm">
-            <Icon name="spark" class="h-4 w-4" />
-          </span>
-          <span class="pr-1 text-base tracking-wide">{{ siteConfig.name }}</span>
-        </NuxtLink>
+        <div class="site-menu-root relative flex items-center gap-2">
+          <button
+            class="flex shrink-0 cursor-pointer items-center justify-center rounded-[9px] p-[3px] transition duration-200 hover:bg-black/6 active:scale-96 dark:hover:bg-white/8"
+            aria-label="打开图标菜单"
+            @pointerdown="toggleMenu"
+            @mouseenter="openMenu"
+            @mouseleave="scheduleCloseMenu"
+          >
+            <NuxtImg
+              src="/favicon.webp"
+              alt="站点图标"
+              width="28"
+              height="28"
+              class="h-7 w-7 rounded-full"
+            />
+          </button>
+          <NuxtLink to="/" class="rounded-full px-1.5 py-1 font-semibold text-slate-800 transition hover:text-teal-600 dark:text-slate-100 dark:hover:text-teal-300">
+            <span class="pr-1 text-base tracking-wide">{{ siteConfig.name }}</span>
+          </NuxtLink>
+
+          <Transition
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="-translate-y-1.5 opacity-0"
+            enter-to-class="translate-y-0 opacity-100"
+            leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="-translate-y-1.5 opacity-0"
+          >
+            <div
+              v-if="menuOpen"
+              class="absolute left-0 top-full z-50 mt-2.5 w-80 rounded-2xl border border-slate-900/8 bg-white/92 p-3.5 shadow-soft-lg backdrop-blur-xl dark:border-white/6 dark:bg-slate-900/92"
+              @mouseenter="openMenu"
+              @mouseleave="scheduleCloseMenu"
+            >
+              <div
+                v-for="(g, gi) in menuGroups"
+                :key="g.title"
+                :class="gi < menuGroups.length - 1 ? 'mb-2.5 border-b border-slate-100 pb-2.5 dark:border-white/5' : ''"
+              >
+                <div class="px-1.5 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ g.title }}</div>
+                <div class="grid grid-cols-2 gap-1">
+                  <a
+                    v-for="item in g.items"
+                    :key="item.label"
+                    :href="item.href"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-2 whitespace-nowrap rounded-[10px] px-2.5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-900/4 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/6 dark:hover:text-slate-100"
+                  >
+                    <img :src="item.icon" alt="" class="h-[18px] w-[18px] shrink-0 object-contain" loading="lazy" />
+                    <span>{{ item.label }}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
       </div>
 
       <!-- 中段：导航（hover 滑动胶囊边框） -->
