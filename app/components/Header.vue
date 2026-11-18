@@ -17,6 +17,7 @@ import { IconBook2, IconHome, IconInfoCircle, IconLink, IconSearch } from '@tabl
 const navs = [
   { label: '首页', to: '/', icon: markRaw(IconHome) },
   { label: '文章', to: '/posts', icon: markRaw(IconBook2) },
+  { label: '留言', to: '/comments', icon: 'comment' },
   { label: '友链', to: '/link', icon: markRaw(IconLink) },
   { label: '关于', to: '/about', icon: markRaw(IconInfoCircle) },
 ]
@@ -80,7 +81,7 @@ onBeforeUnmount(() => {
   if (menuCloseTimer) clearTimeout(menuCloseTimer)
 })
 
-const segClass = 'flex h-11 shrink-0 items-center rounded-full border border-black/5 bg-white/70 shadow-soft backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 dark:bg-slate-900/80'
+const segClass = 'flex h-11 shrink-0 items-center rounded-full border border-black/5 bg-white/70 shadow-soft backdrop-blur-md backdrop-saturate-150 sm:backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/80'
 const iconBtnClass = 'flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition hover:bg-teal-100/70 hover:text-teal-600 dark:text-slate-400 dark:hover:bg-teal-800/40 dark:hover:text-teal-300'
 
 function isActive(to: string) {

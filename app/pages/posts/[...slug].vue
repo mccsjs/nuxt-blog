@@ -19,6 +19,19 @@ const { data: surround } = await useAsyncData(`surround-${path}`, () =>
 const prev = computed(() => surround.value?.[0])
 const next = computed(() => surround.value?.[1])
 
+const articleUrl = computed(() => `${useRuntimeConfig().public.siteUrl}${post.value?.path || path}`)
+
+const copyState = ref<'idle' | 'copied' | 'failed'>('idle')
+async function copyArticleUrl() {
+  try {
+    await navigator.clipboard.writeText(articleUrl.value)
+    copyState.value = 'copied'
+  } catch {
+    copyState.value = 'failed'
+  }
+  setTimeout(() => { copyState.value = 'idle' }, 2000)
+}
+
 const contentRef = ref<HTMLElement | null>(null)
 useFancybox(contentRef, () => route.path)
 
@@ -55,7 +68,7 @@ usePageSeo(() => ({
 </script>
 
 <template>
-  <div v-if="post" class="grid gap-8" :class="tocLinks.length ? 'xl:grid-cols-[1fr_16rem]' : 'xl:mx-auto xl:max-w-[54rem]'">
+  <div v-if="post" class="grid gap-8 lg:gap-12" :class="tocLinks.length ? 'lg:grid-cols-[2fr_280px]' : 'mx-auto max-w-3xl'">
     <article class="min-w-0">
       <!-- 文章头部 -->
       <header class="fade-up rounded-3xl border border-white/70 bg-white/85 p-7 shadow-soft backdrop-blur sm:p-9 dark:border-slate-700/70 dark:bg-slate-900/80">
@@ -122,6 +135,53 @@ usePageSeo(() => ({
           </span>
         </NuxtLink>
       </nav>
+
+      <!-- 版权协议 -->
+      <section class="relative mt-6 overflow-hidden rounded-2xl border border-white/70 bg-white/85 p-6 py-5 shadow-soft backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/80">
+        <button
+          type="button"
+          title="复制链接"
+          class="absolute right-3 top-3 flex items-center gap-1 rounded-lg border border-slate-200 bg-white/80 px-2.5 py-1.5 text-xs text-slate-500 transition hover:border-teal-400 hover:text-teal-600 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-400 dark:hover:border-teal-500 dark:hover:text-teal-400"
+          @click="copyArticleUrl"
+        >
+          <Icon :name="copyState === 'idle' ? 'link' : (copyState === 'copied' ? 'arrowRight' : 'close')" class="h-3.5 w-3.5" />
+          <span>{{ copyState === 'copied' ? '已复制' : (copyState === 'failed' ? '复制失败' : '复制链接') }}</span>
+        </button>
+
+        <div class="pr-24 font-bold text-slate-700 dark:text-slate-200">{{ post.title }}</div>
+        <a
+          :href="articleUrl"
+          class="mt-1 block break-all text-teal-700 underline underline-offset-2 dark:text-teal-400"
+        >{{ articleUrl }}</a>
+
+        <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:gap-6">
+          <div>
+            <div class="text-sm text-slate-400 dark:text-slate-500">文章作者</div>
+            <div class="text-slate-700 dark:text-slate-300">{{ siteConfig.author }}</div>
+          </div>
+          <div>
+            <div class="text-sm text-slate-400 dark:text-slate-500">发布日期</div>
+            <div class="text-slate-700 dark:text-slate-300">{{ formatDate(post.date) }}</div>
+          </div>
+          <div>
+            <div class="text-sm text-slate-400 dark:text-slate-500">许可协议</div>
+            <a
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="inline-flex items-center gap-1.5 text-teal-700 underline underline-offset-2 dark:text-teal-400"
+            >
+              <span>CC BY-NC-SA 4.0</span>
+              <span class="flex items-center gap-0.5">
+                <img src="/cc/cc.svg" alt="CC" class="h-4 w-4 opacity-70 dark:invert dark:opacity-80" />
+                <img src="/cc/by.svg" alt="BY" class="h-4 w-4 opacity-70 dark:invert dark:opacity-80" />
+                <img src="/cc/nc.svg" alt="NC" class="h-4 w-4 opacity-70 dark:invert dark:opacity-80" />
+                <img src="/cc/sa.svg" alt="SA" class="h-4 w-4 opacity-70 dark:invert dark:opacity-80" />
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <PostComments />
     </article>

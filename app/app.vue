@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const site = useSiteConfig()
 const blog = useBlogConfig()
+const route = useRoute()
+
+const wideLayout = computed(() => /^\/posts\/[^/]+$/.test(route.path))
 
 useSchemaOrg([
   {
@@ -26,7 +29,10 @@ useSchemaOrg([
   <div class="relative min-h-screen flex flex-col">
     <SiteBackground />
     <Header />
-    <main class="relative z-10 flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+    <main
+      class="relative z-10 flex-1 w-full mx-auto px-4 sm:px-6 pt-24 pb-16"
+      :class="wideLayout ? 'max-w-[1200px]' : 'max-w-6xl'"
+    >
       <Breadcrumb />
       <NuxtPage />
     </main>

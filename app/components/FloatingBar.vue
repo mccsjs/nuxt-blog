@@ -13,7 +13,7 @@ const isPost = computed(() => route.path.startsWith('/posts/'))
 const showToc = computed(() => isPost.value && tocLinks.value.length > 0)
 const showComment = computed(() => isPost.value || route.path === '/link')
 
-const btnClass = 'pointer-events-auto flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-slate-300/50 bg-white/85 text-slate-600 shadow-[0_2px_12px_rgb(0_0_0/0.06)] backdrop-blur-md transition duration-300 hover:-translate-y-px hover:scale-105 hover:border-slate-400/60 hover:bg-white hover:text-slate-800 dark:border-white/10 dark:bg-slate-900/75 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-slate-800/90 dark:hover:text-white sm:h-[42px] sm:w-[42px]'
+const btnClass = 'pointer-events-auto flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-slate-300/50 bg-white/85 text-slate-600 shadow-[0_2px_12px_rgb(0_0_0/0.06)] transition sm:backdrop-blur-md duration-300 hover:-translate-y-px hover:scale-105 hover:border-slate-400/60 hover:bg-white hover:text-slate-800 dark:border-white/10 dark:bg-slate-900/75 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-slate-800/90 dark:hover:text-white sm:h-[42px] sm:w-[42px]'
 
 function onScroll() {
   scrolled.value = window.scrollY > 200

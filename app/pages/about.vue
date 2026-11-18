@@ -5,7 +5,7 @@ usePageSeo({ title: `关于 - ${siteConfig.name}`, description: `关于 ${siteCo
 </script>
 
 <template>
-  <div class="mx-auto max-w-3xl">
+  <div class="mx-auto max-w-5xl">
     <section class="fade-up mb-8 text-center">
       <NuxtImg
         :src="siteConfig.avatar"

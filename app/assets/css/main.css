@@ -199,6 +199,18 @@ pre.shiki span,
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 移动端性能降级：光斑动画与全页模糊非常吃 GPU */
+@media (max-width: 767px) {
+  .blob,
+  .blob-slow {
+    animation: none;
+  }
+  .page-enter-from,
+  .page-leave-to {
+    filter: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-up, .blob, .blob-slow {
     animation: none;

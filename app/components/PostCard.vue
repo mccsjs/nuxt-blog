@@ -19,7 +19,7 @@ const gradient = computed(() => gradientFor(props.path))
 <template>
   <NuxtLink
     :to="path"
-    class="group relative flex overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-soft backdrop-blur transition duration-300 hover:-translate-y-1.5 hover:shadow-soft-lg dark:border-slate-700/70 dark:bg-slate-900/80"
+    class="group relative flex overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-soft transition sm:backdrop-blur duration-300 hover:-translate-y-1.5 hover:shadow-soft-lg dark:border-slate-700/70 dark:bg-slate-900/80"
     :class="horizontal ? 'flex-col sm:flex-row' : 'flex-col'"
   >
     <!-- 封面 / 渐变头图 -->
@@ -36,14 +36,14 @@ const gradient = computed(() => gradientFor(props.path))
         class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
       />
       <div v-else class="flex h-full w-full items-center justify-center bg-gradient-to-br transition duration-500 group-hover:scale-105" :class="gradient">
-        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/60 text-teal-600 shadow-sm backdrop-blur dark:bg-white/10 dark:text-teal-300">
+        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/60 text-teal-600 shadow-sm dark:bg-white/10 dark:text-teal-300">
           <Icon name="posts" class="h-5 w-5" />
         </span>
       </div>
       <div class="pointer-events-none absolute inset-0 dark:bg-black/10"></div>
       <span
         v-if="category"
-        class="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold text-teal-700 shadow-sm backdrop-blur dark:bg-slate-900/80 dark:text-teal-300"
+        class="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold text-teal-700 shadow-sm dark:bg-slate-900/80 dark:text-teal-300"
       >
         {{ category }}
       </span>

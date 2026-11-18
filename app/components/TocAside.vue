@@ -41,7 +41,7 @@ onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <nav v-if="items.length" class="sticky top-28 hidden max-h-[calc(100vh-9rem)] overflow-y-auto xl:block" aria-label="文章目录">
+  <nav v-if="items.length" class="sticky top-28 hidden max-h-[calc(100vh-9rem)] overflow-y-auto lg:block" aria-label="文章目录">
     <div class="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/75">
       <h3 class="mb-3 flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200">
         <Icon name="archive" class="h-4 w-4 text-teal-500" />

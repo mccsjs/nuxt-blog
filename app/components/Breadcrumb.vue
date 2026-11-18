@@ -1,9 +1,35 @@
 <script setup lang="ts">
+import {
+  IconArchive,
+  IconBook2,
+  IconFolder,
+  IconHome,
+  IconInfoCircle,
+  IconLink,
+  IconMail,
+  IconMessage,
+  IconShield,
+  IconTag,
+} from '@tabler/icons-vue'
+
 interface Crumb {
   label: string
   to?: string
   current?: boolean
-  icon?: string
+  icon?: string | object
+}
+
+const icons: Record<string, object> = {
+  home: IconHome,
+  posts: IconBook2,
+  archive: IconArchive,
+  folder: IconFolder,
+  tags: IconTag,
+  link: IconLink,
+  user: IconInfoCircle,
+  email: IconMail,
+  comment: IconMessage,
+  shield: IconShield,
 }
 
 const route = useRoute()
@@ -38,7 +64,8 @@ const items = computed<Crumb[]>(() => {
   if (head === 'link') return [home, { label: '友链', current: true, icon: 'link' }]
   if (head === 'about') return [home, { label: '关于', current: true, icon: 'user' }]
   if (head === 'contact') return [home, { label: '联系', current: true, icon: 'email' }]
-  if (head === 'privacy') return [home, { label: '隐私声明', current: true, icon: 'archive' }]
+  if (head === 'comments') return [home, { label: '留言板', current: true, icon: 'comment' }]
+  if (head === 'privacy') return [home, { label: '隐私声明', current: true, icon: 'shield' }]
   return [home, { label: '页面', current: true }]
 })
 
@@ -71,11 +98,11 @@ useHead(() => ({
           :to="item.to"
           class="inline-flex items-center gap-1.5 text-teal-600 transition hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300"
         >
-          <Icon v-if="item.icon" :name="item.icon" class="h-3.5 w-3.5" />
+          <component :is="icons[item.icon as string]" v-if="item.icon" :size="14" :stroke="1.8" class="h-3.5 w-3.5" />
           <span>{{ item.label }}</span>
         </NuxtLink>
         <span v-else class="inline-flex items-center gap-1.5 font-medium text-slate-800 dark:text-slate-100">
-          <Icon v-if="item.icon" :name="item.icon" class="h-3.5 w-3.5" />
+          <component :is="icons[item.icon as string]" v-if="item.icon" :size="14" :stroke="1.8" class="h-3.5 w-3.5" />
           <span>{{ item.label }}</span>
         </span>
       </li>

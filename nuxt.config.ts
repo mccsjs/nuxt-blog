@@ -37,6 +37,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     exclude: ['/404'],
+    xsl: false,
   },
   css: ['~/assets/css/main.css'],
   vite: {
